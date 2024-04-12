@@ -29,6 +29,10 @@
     },
     "post": {
         "created": "The post was created successfully",
+        "updated": "The post was updated successfully",
+        "deleted": "The post was deleted successfully!",
+        "unauthorized": "You dont have access to perform this action",
+        "not_found": "The post was not found",
         "image_uploaded": "A imagem foi carregada com sucesso para o post!",
         "image_not_found": "Por favor adicione a imagem!"
     }

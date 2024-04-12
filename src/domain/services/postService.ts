@@ -45,6 +45,9 @@ export default class PostService {
   static async getAllFromUser(userId: string): Promise<Post[]> {
     return await prisma.post.findMany({
       where: { userId: userId },
+      include: {
+        images: true,
+      },
     });
   }
 
@@ -55,6 +58,18 @@ export default class PostService {
   static async getById(id: string): Promise<Post> {
     return await prisma.post.findFirst({
       where: { id: id },
+      include: {
+        images: true,
+      },
+    });
+  }
+
+  static async getByIdAndUser(id: string, userId: string): Promise<Post> {
+    return await prisma.post.findFirst({
+      where: { id: id, userId: userId },
+      include: {
+        images: true,
+      },
     });
   }
 
@@ -63,5 +78,11 @@ export default class PostService {
       where: { id: id },
     });
     return post != null;
+  }
+
+  static async deleteById(id: string): Promise<Post> {
+    return await prisma.post.delete({
+      where: { id: id },
+    });
   }
 }

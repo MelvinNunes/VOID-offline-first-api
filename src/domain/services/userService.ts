@@ -66,4 +66,10 @@ export class UserServices {
       where: { email: email },
     });
   }
+
+  static async findById(id: string) {
+    return await prisma.user.findFirst({
+      where: { id: id },
+    });
+  }
 }
