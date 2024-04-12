@@ -27,6 +27,15 @@ const uploadRegister = multer({
   },
 });
 
+/**
+ * @openapi
+ * /:
+ *   get:
+ *     description: Welcome to swagger-jsdoc!
+ *     responses:
+ *       200:
+ *         description: Returns a mysterious string.
+ */
 router.get("/health", HealthController.checkApiHealth);
 
 router.post("/login", checkSchema(loginValidator), AuthController.login);
