@@ -11,6 +11,8 @@ export default class PostService {
         id: post.id,
         userId: post.userId,
         body: post.content,
+        categoryId: post.category,
+        title: post.title,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
