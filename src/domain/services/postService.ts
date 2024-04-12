@@ -6,6 +6,7 @@ import {
 } from "../../../src/dtos/postDTOs";
 import { logger } from "../../../src/infrastructure/config/logger";
 import PostCategoriesService from "./postCategoryService";
+import ImageService from "./imageService";
 
 const prisma = new PrismaClient();
 
@@ -47,6 +48,9 @@ export default class PostService {
           throw new Error(`Cannot find category with id: ${post.category}`);
         }
         await this.createOrUpdatePost(dto);
+
+        // if exists any image related to the post, that was created before the post
+        await ImageService.updatePostRelationFromPostId(post.id);
       } catch (err) {
         failedPosts.push(post);
         // Log the info
