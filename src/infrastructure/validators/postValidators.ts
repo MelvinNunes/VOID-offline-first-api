@@ -18,3 +18,18 @@ export const postImageValidator = {
     optional: false,
   },
 };
+
+export const postUpdateValidator = {
+  title: {
+    optional: true,
+  },
+  content: {
+    optional: true,
+  },
+  category: {
+    isNumeric: {
+      errorMessage: "Please enter a valid category int",
+    },
+    optional: true,
+  },
+};

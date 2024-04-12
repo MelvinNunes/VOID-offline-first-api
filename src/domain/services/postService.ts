@@ -1,5 +1,5 @@
 import { Post, PrismaClient } from "@prisma/client";
-import { PostDTO } from "../../../src/dtos/postDTOs";
+import { PostDTO, PostUpdateDTO } from "../../../src/dtos/postDTOs";
 import { logger } from "../../../src/infrastructure/config/logger";
 
 const prisma = new PrismaClient();
@@ -39,6 +39,23 @@ export default class PostService {
 
     return await prisma.post.createMany({
       data: builtPosts,
+    });
+  }
+
+  static async updatePost(post: Post, data: PostUpdateDTO): Promise<Post> {
+    post.title = data.title;
+    post.body = data.content;
+    post.categoryId = data.category;
+    post.updatedAt = new Date();
+
+    return await prisma.post.update({
+      where: { id: post.id },
+      data: {
+        body: post.body,
+        title: post.title,
+        categoryId: post.categoryId,
+        updatedAt: post.updatedAt,
+      },
     });
   }
 

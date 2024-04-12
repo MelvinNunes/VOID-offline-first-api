@@ -16,7 +16,9 @@ import PostController from "../../src/controller/postController";
 import {
   postCreationValidator,
   postImageValidator,
+  postUpdateValidator,
 } from "../../src/infrastructure/validators/postValidators";
+
 const router = express.Router();
 const multer = require("multer");
 const fs = require("fs");
@@ -99,11 +101,15 @@ router.post(
 router.post(
   "/posts",
   authenticateToken,
-  upload.single("image"),
   checkSchema(postCreationValidator),
   PostController.createPost
 );
-
+router.put(
+  "/posts/:id",
+  checkSchema(postUpdateValidator),
+  authenticateToken,
+  PostController.updatePostById
+);
 router.get("/posts", authenticateToken, PostController.getAllPosts);
 router.get("/posts/:id", authenticateToken, PostController.getPostDetailsById);
 router.delete("/posts/:id", authenticateToken, PostController.deletePostById);

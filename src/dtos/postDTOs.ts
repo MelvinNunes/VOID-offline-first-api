@@ -10,3 +10,9 @@ export type PostDTO = {
   userId: string;
   images?: ImageDTO[];
 };
+
+export type PostUpdateDTO = {
+  title?: string;
+  content?: string;
+  category: number;
+};

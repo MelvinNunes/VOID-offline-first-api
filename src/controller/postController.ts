@@ -8,6 +8,9 @@ import PostService from "../../src/domain/services/postService";
 import ImageService from "../../src/domain/services/imageService";
 import { UserServices } from "../../src/domain/services/userService";
 import { Role } from "@prisma/client";
+import { PostUpdateDTO } from "../../src/dtos/postDTOs";
+import PostCategoriesService from "../../src/domain/services/postCategoryService";
+import { logger } from "../../src/infrastructure/config/logger";
 
 export default class PostController {
   static async createPost(req: RequestWithUser, res: Response) {
@@ -160,6 +163,34 @@ export default class PostController {
     if (post.userId !== user.id) {
       return res.status(403).json({
         message: req.t("post.unauthorized"),
+      });
+    }
+
+    if (data.category) {
+      const category = await PostCategoriesService.getById(data.category);
+      if (!category) {
+        return res.status(404).json({
+          message: req.t("post_category.not_found"),
+        });
+      }
+    }
+
+    const postData: PostUpdateDTO = {
+      title: data.title,
+      content: data.content,
+      category: data.category,
+    };
+
+    try {
+      const postUpdated = await PostService.updatePost(post, postData);
+      return res.status(200).json({
+        message: req.t("post.updated"),
+        data: postUpdated,
+      });
+    } catch (err) {
+      logger.error("Error while updating post: ", err);
+      return res.status(500).json({
+        message: req.t("internal_server_error"),
       });
     }
   }

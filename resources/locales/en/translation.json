@@ -31,8 +31,8 @@
         "created": "O post foi criado com sucesso!",
         "updated": "O post foi atualizado com sucesso",
         "deleted": "O post foi apagado com sucesso!",
-        "unauthorized": "You dont have access to perform this action",
         "not_found": "O post não foi encontrado!",
+        "unauthorized": "You dont have access to perform this action",
         "image_uploaded": "The image was successfully uploaded to the post",
         "image_not_found": "Please insert the image!"
     }
