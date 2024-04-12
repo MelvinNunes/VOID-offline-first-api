@@ -31,7 +31,10 @@ export default class PostCategoriesService {
     });
   }
 
-  static async update(postCategory: PostCategory) {
+  static async update(postCategory: PostCategory, name: string) {
+    postCategory.name = name;
+    postCategory.updatedAt = new Date();
+
     return await prisma.postCategory.update({
       where: {
         id: postCategory.id,
@@ -51,6 +54,13 @@ export default class PostCategoriesService {
   static async existsByName(name: string) {
     const postCategory = await prisma.postCategory.findFirst({
       where: { name: name },
+    });
+    return postCategory != null;
+  }
+
+  static async existsById(id: number) {
+    const postCategory = await prisma.postCategory.findFirst({
+      where: { id: id },
     });
     return postCategory != null;
   }

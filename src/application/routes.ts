@@ -12,6 +12,8 @@ import AuthController from "../../src/controller/authController";
 import { authenticateToken } from "./middlewares";
 import PostCategoryController from "../../src/controller/postCategoryController";
 import { createPostCategoryValidator } from "../../src/infrastructure/validators/postCategoriesValidators";
+import PostController from "../../src/controller/postController";
+import { postCreationValidator } from "../../src/infrastructure/validators/postValidators";
 const router = express.Router();
 const multer = require("multer");
 
@@ -58,6 +60,34 @@ router.get(
   "/categories/:id",
   authenticateToken,
   PostCategoryController.getPostCategoryById
+);
+
+router.put(
+  "/categories/:id",
+  authenticateToken,
+  checkSchema(createPostCategoryValidator),
+  PostCategoryController.updatePostCategory
+);
+
+router.delete(
+  "/categories/:id",
+  authenticateToken,
+  PostCategoryController.deletePostCategory
+);
+
+router.post(
+  "/posts/:id/images",
+  authenticateToken,
+  upload.single("image"),
+  PostController.uploadImageToPost
+);
+
+router.post(
+  "/posts",
+  authenticateToken,
+  upload.single("image"),
+  checkSchema(postCreationValidator),
+  PostController.createPost
 );
 
 module.exports = router;

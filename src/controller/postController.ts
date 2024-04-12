@@ -12,7 +12,6 @@ export default class PostController {
     }
 
     const data = matchedData(req);
-
     const posts = data.posts;
 
     try {
@@ -27,4 +26,6 @@ export default class PostController {
       message: "Posts where created successfully!.",
     });
   }
+
+  static async uploadImageToPost(req: RequestWithUser, res: Response) {}
 }
