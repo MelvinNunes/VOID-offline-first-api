@@ -37,6 +37,12 @@ export interface RegisterRequest extends Request {
   t?: TFunction;
 }
 
+export interface RegisterWithUserAndFile extends Request {
+  file: File;
+  user?: AuthUser;
+  t?: TFunction;
+}
+
 export interface RequestWTranslation extends Request {
   t?: TFunction;
 }

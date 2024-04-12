@@ -9,3 +9,12 @@ export const postCreationValidator = {
     },
   },
 };
+
+export const postImageValidator = {
+  is_post: {
+    isBoolean: {
+      errorMessage: "Please insert a valid error message",
+    },
+    optional: false,
+  },
+};

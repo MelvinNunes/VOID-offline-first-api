@@ -18,6 +18,7 @@ app.use(cors());
 
 app.use(i18nextMiddleware.handle(i18nextConfig));
 
+app.use("/uploads", express.static("uploads"));
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/v1", require("../application/routes"));
 

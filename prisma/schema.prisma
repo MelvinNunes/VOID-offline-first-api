@@ -53,25 +53,26 @@ model PostCategory {
 }
 
 model Post {
-  id         String       @id @default(uuid())
-  userId     String       @map("user_id")
-  user       User         @relation(fields: [userId], references: [id])
-  title      String
+  id         String        @id
+  userId     String        @map("user_id")
+  user       User          @relation(fields: [userId], references: [id])
+  title      String?
   body       String?
-  categoryId Int          @map("category_id")
-  category   PostCategory @relation(fields: [categoryId], references: [id])
+  categoryId Int?          @map("category_id")
+  category   PostCategory? @relation(fields: [categoryId], references: [id])
   images     Image[]
-  createdAt  DateTime     @map("created_at") @db.Timestamp()
-  updatedAt  DateTime     @map("updated_at") @db.Timestamp()
+  createdAt  DateTime      @map("created_at") @db.Timestamp()
+  updatedAt  DateTime      @map("updated_at") @db.Timestamp()
 
   @@map("posts")
 }
 
 model Image {
-  id        String   @id @default(uuid())
-  source    String
-  Post      Post?    @relation(fields: [postId], references: [id])
-  postId    String?
-  createdAt DateTime @map("created_at") @db.Timestamp()
-  updatedAt DateTime @map("updated_at") @db.Timestamp()
+  id              String   @id @default(uuid())
+  source          String
+  temporaryPostId String?
+  Post            Post?    @relation(fields: [postId], references: [id])
+  postId          String?
+  createdAt       DateTime @map("created_at") @db.Timestamp()
+  updatedAt       DateTime @map("updated_at") @db.Timestamp()
 }

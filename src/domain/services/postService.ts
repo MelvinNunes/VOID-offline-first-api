@@ -1,9 +1,28 @@
 import { Post, PrismaClient } from "@prisma/client";
 import { PostDTO } from "../../../src/dtos/postDTOs";
+import { logger } from "../../../src/infrastructure/config/logger";
 
 const prisma = new PrismaClient();
 
 export default class PostService {
+  static async createPostViaImage(userId: string, postId: string) {
+    try {
+      return await prisma.post.create({
+        data: {
+          id: postId,
+          userId: userId,
+          body: null,
+          categoryId: null,
+          title: null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+    } catch (err) {
+      logger.error("Error while saving post: ", err);
+    }
+  }
+
   static async createManyPosts(posts: PostDTO[]) {
     // build posts
     const builtPosts = posts.map((post) => {

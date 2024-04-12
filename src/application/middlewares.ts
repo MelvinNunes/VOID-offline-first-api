@@ -32,7 +32,7 @@ function authenticateToken(req: RequestWithUser, res: Response, next: any) {
 
   if (token == null)
     return res.status(401).json({
-      message: "Please insert the authentication token!",
+      message: req.t("auth.token_not_found"),
     });
 
   jwt.verify(
@@ -41,7 +41,7 @@ function authenticateToken(req: RequestWithUser, res: Response, next: any) {
     (err: any, user: AuthUser) => {
       if (err)
         return res.status(403).json({
-          message: "The inserted auth token is invalid!!",
+          message: req.t("auth.token_not_valid"),
         });
       req.user = user;
       next();

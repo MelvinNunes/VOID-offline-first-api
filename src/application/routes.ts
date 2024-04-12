@@ -2,7 +2,7 @@ import express from "express";
 import HealthController from "../../src/controller/healthController";
 import UserController from "../../src/controller/userController";
 import path from "path";
-import { isDocument } from "../../src/infrastructure/utils/validators";
+import { isImage } from "../../src/infrastructure/utils/validators";
 import { checkSchema } from "express-validator";
 import {
   loginValidator,
@@ -13,13 +13,21 @@ import { authenticateToken } from "./middlewares";
 import PostCategoryController from "../../src/controller/postCategoryController";
 import { createPostCategoryValidator } from "../../src/infrastructure/validators/postCategoriesValidators";
 import PostController from "../../src/controller/postController";
-import { postCreationValidator } from "../../src/infrastructure/validators/postValidators";
+import {
+  postCreationValidator,
+  postImageValidator,
+} from "../../src/infrastructure/validators/postValidators";
 const router = express.Router();
 const multer = require("multer");
+const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, "uploads");
+    const uploadPath = "./uploads";
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath);
+    }
+    cb(null, uploadPath);
   },
   filename: function (req: any, file: any, cb: any) {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -28,7 +36,7 @@ var storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: function (_req: any, file: any, cb: any) {
-    isDocument(file, cb);
+    isImage(file, cb);
   },
 });
 
@@ -83,7 +91,8 @@ router.delete(
 router.post(
   "/posts/:id/images",
   authenticateToken,
-  upload.single("image"),
+  upload.single("file"),
+  checkSchema(postImageValidator),
   PostController.uploadImageToPost
 );
 

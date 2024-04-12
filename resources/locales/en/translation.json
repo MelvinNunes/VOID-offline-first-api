@@ -5,7 +5,9 @@
     "auth": {
         "success": "You're now authenticated!",
         "invalid_credentials": "Invalid credentials",
-        "not_enough_access": "Only a Admin can perform this action!"
+        "not_enough_access": "Only a Admin can perform this action!",
+        "token_not_found": "Please insert the authentication token!",
+        "token_not_valid": "The inserted auth token is invalid!"
     },
     "post_category": {
         "already_exists": "Post category already exists!",
@@ -24,5 +26,10 @@
     "profile": {
         "success": "Your profile",
         "not_found": "Profile was not found!"
+    },
+    "post": {
+        "created": "O post foi criado com sucesso!",
+        "image_uploaded": "The image was successfully uploaded to the post",
+        "image_not_found": "Please insert the image!"
     }
 }
