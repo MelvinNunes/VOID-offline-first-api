@@ -160,7 +160,10 @@ export default class PostService {
       if (
         post.id !== undefined &&
         post.content !== undefined &&
-        post.category !== undefined
+        post.category !== undefined &&
+        post.title !== "" &&
+        post.content !== "" &&
+        post.category !== 0
       ) {
         thereAreValidPosts = true;
       }
