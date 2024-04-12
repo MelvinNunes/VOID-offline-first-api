@@ -6,7 +6,7 @@ export type PostDTO = {
   id: string;
   title?: string;
   content?: string;
-  category: string;
+  category: number;
   userId: string;
   images?: ImageDTO[];
 };
