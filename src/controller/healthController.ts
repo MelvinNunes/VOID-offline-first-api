@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 
 export default class HealthController {
-  static async checkApiHealth(req: Request, res: Response) {
+  static async checkApiHealth(req: any, res: Response) {
     return res.json({
-      message: "API is health!.",
+      message: req.t("health"),
     });
   }
 }

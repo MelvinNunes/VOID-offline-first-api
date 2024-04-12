@@ -4,6 +4,7 @@ import {
   AuthUser,
   RequestWithUser,
 } from "../infrastructure/types";
+import { logger } from "../../src/infrastructure/config/logger";
 const jwt = require("jsonwebtoken");
 
 async function handleErrorsMiddleware(
@@ -17,6 +18,7 @@ async function handleErrorsMiddleware(
       message: err.message,
     });
   } else {
+    logger.error("err : ", err);
     console.error(`Unknown error: ${err.name}`);
     res.status(500).json({
       message: "Something went wrong!",
