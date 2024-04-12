@@ -83,3 +83,18 @@ describe("Test Valid Posts Array Submission", () => {
     expect(res).toBe(true);
   });
 });
+
+describe("Test If Ther are Posts submitted", () => {
+  it("responds to postService", () => {
+    const posts: PostDTO[] = [
+      {
+        id: "b554a93e-68b6-46f5-91e0-86e183f8dbc2",
+        title: "melvin",
+        content: "nunes",
+        category: 1,
+      },
+    ];
+    const res = PostService.checkIfThereArePosts(posts);
+    expect(res).toBe(true);
+  });
+});
