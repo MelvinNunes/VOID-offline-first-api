@@ -7,7 +7,6 @@ export type PostDTO = {
   title?: string;
   content?: string;
   category: number;
-  userId: string;
   images?: ImageDTO[];
 };
 
@@ -15,4 +14,12 @@ export type PostUpdateDTO = {
   title?: string;
   content?: string;
   category: number;
+};
+
+export type PostCreateOrUpdate = {
+  postId: string;
+  userId: string;
+  content?: string;
+  title?: string;
+  category?: number;
 };

@@ -34,6 +34,8 @@
         "not_found": "O post não foi encontrado!",
         "unauthorized": "You dont have access to perform this action",
         "image_uploaded": "The image was successfully uploaded to the post",
-        "image_not_found": "Please insert the image!"
+        "image_not_found": "Please insert the image!",
+        "no_posts": "No posts were found in the posts array!",
+        "no_posts_id": "No posts with an id, category and body were found in the posts array!"
     }
 }

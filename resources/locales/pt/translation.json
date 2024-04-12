@@ -34,6 +34,8 @@
         "unauthorized": "You dont have access to perform this action",
         "not_found": "The post was not found",
         "image_uploaded": "A imagem foi carregada com sucesso para o post!",
-        "image_not_found": "Por favor adicione a imagem!"
+        "image_not_found": "Por favor adicione a imagem!",
+        "no_posts": "Nenhum post foi carregado no array de posts!",
+        "no_posts_id": "Nenhum post foi carregado com um id, categoria e corpo no array de posts!"
     }
 }

@@ -1,6 +1,11 @@
 import { Post, PrismaClient } from "@prisma/client";
-import { PostDTO, PostUpdateDTO } from "../../../src/dtos/postDTOs";
+import {
+  PostCreateOrUpdate,
+  PostDTO,
+  PostUpdateDTO,
+} from "../../../src/dtos/postDTOs";
 import { logger } from "../../../src/infrastructure/config/logger";
+import PostCategoriesService from "./postCategoryService";
 
 const prisma = new PrismaClient();
 
@@ -23,22 +28,56 @@ export default class PostService {
     }
   }
 
-  static async createManyPosts(posts: PostDTO[]) {
-    // build posts
-    const builtPosts = posts.map((post) => {
-      return {
-        id: post.id,
-        userId: post.userId,
-        body: post.content,
-        categoryId: post.category,
+  static async createManyPosts(posts: PostDTO[], userId: string) {
+    const failedPosts: PostDTO[] = [];
+
+    for (const post of posts) {
+      const dto: PostCreateOrUpdate = {
+        postId: post.id,
+        userId: userId,
+        category: post.category,
+        content: post.content,
         title: post.title,
+      };
+      try {
+        const categoryExists = await PostCategoriesService.existsById(
+          post.category
+        );
+        if (!categoryExists) {
+          throw new Error(`Cannot find category with id: ${post.category}`);
+        }
+        await this.createOrUpdatePost(dto);
+      } catch (err) {
+        failedPosts.push(post);
+        // Log the info
+        logger.error(`Post ID: ${post.id}`);
+        logger.error(`Error while saving post: ${err}`);
+      }
+    }
+
+    return failedPosts;
+  }
+
+  static async createOrUpdatePost(dto: PostCreateOrUpdate) {
+    return await prisma.post.upsert({
+      create: {
+        id: dto.postId,
+        userId: dto.userId,
+        body: dto.content,
+        categoryId: dto.category,
+        title: dto.title,
         createdAt: new Date(),
         updatedAt: new Date(),
-      };
-    });
-
-    return await prisma.post.createMany({
-      data: builtPosts,
+      },
+      update: {
+        title: dto.title,
+        body: dto.content,
+        categoryId: dto.category,
+        updatedAt: new Date(),
+      },
+      where: {
+        id: dto.postId,
+      },
     });
   }
 
@@ -77,6 +116,7 @@ export default class PostService {
       where: { id: id },
       include: {
         images: true,
+        category: true,
       },
     });
   }
@@ -86,6 +126,7 @@ export default class PostService {
       where: { id: id, userId: userId },
       include: {
         images: true,
+        category: true,
       },
     });
   }
@@ -101,5 +142,29 @@ export default class PostService {
     return await prisma.post.delete({
       where: { id: id },
     });
+  }
+
+  static checkIfThereArePosts(posts: PostDTO[]) {
+    var thereArePosts = false;
+    posts.forEach((post) => {
+      if (Object.keys(post).length !== 0) {
+        thereArePosts = true;
+      }
+    });
+    return thereArePosts;
+  }
+
+  static checkIfThereAreAnyValidPosts(posts: PostDTO[]) {
+    var thereAreValidPosts = false;
+    posts.forEach((post) => {
+      if (
+        post.id !== undefined &&
+        post.content !== undefined &&
+        post.category !== undefined
+      ) {
+        thereAreValidPosts = true;
+      }
+    });
+    return thereAreValidPosts;
   }
 }

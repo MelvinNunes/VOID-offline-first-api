@@ -21,19 +21,39 @@ export default class PostController {
     }
 
     const data = matchedData(req);
+    const authUser = req.user;
     const posts = data.posts;
 
-    try {
-      await PostService.createManyPosts(posts);
-    } catch (err) {
-      return res.status(500).json({
-        message: "Internal server error while creating posts!",
+    if (!PostService.checkIfThereArePosts(posts)) {
+      return res.status(400).json({
+        message: req.t("post.no_posts"),
       });
     }
 
-    return res.status(201).json({
-      message: "Posts where created successfully!.",
-    });
+    if (!PostService.checkIfThereAreAnyValidPosts(posts)) {
+      return res.status(400).json({
+        message: req.t("post.no_posts_id"),
+      });
+    }
+
+    const user = await UserServices.findByEmail(authUser.name);
+    if (!user) {
+      return res.status(404).json({
+        message: req.t("user.not_found"),
+      });
+    }
+
+    try {
+      const failedPosts = await PostService.createManyPosts(posts, user.id);
+      return res.status(201).json({
+        message: req.t("post.created"),
+        failed: failedPosts,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: req.t("internal_server_error"),
+      });
+    }
   }
 
   static async uploadImageToPost(req: RegisterWithUserAndFile, res: Response) {
