@@ -28,4 +28,14 @@ export default class PostController {
   }
 
   static async uploadImageToPost(req: RequestWithUser, res: Response) {}
+
+  static async getAllPosts(req: RequestWithUser, res: Response) {}
+
+  static async getPostDetailsById(req: RequestWithUser, res: Response) {}
+
+  static async updatePostById(req: RequestWithUser, res: Response) {}
+
+  static async deletePostById(req: RequestWithUser, res: Response) {}
+
+  static async getPostsFromSpecificUser(req: RequestWithUser, res: Response) {}
 }

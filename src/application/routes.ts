@@ -42,6 +42,11 @@ router.post(
 
 router.get("/me", authenticateToken, UserController.getOnlineUser);
 router.get("/users", authenticateToken, UserController.getAllUsers);
+router.get(
+  "/users/:id/posts",
+  authenticateToken,
+  PostController.getPostsFromSpecificUser
+);
 
 router.post(
   "/categories",
@@ -89,5 +94,9 @@ router.post(
   checkSchema(postCreationValidator),
   PostController.createPost
 );
+
+router.get("/posts", authenticateToken, PostController.getAllPosts);
+router.get("/posts/:id", authenticateToken, PostController.getPostDetailsById);
+router.delete("/posts/:id", authenticateToken, PostController.deletePostById);
 
 module.exports = router;
