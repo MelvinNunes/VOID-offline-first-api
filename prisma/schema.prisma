@@ -24,6 +24,7 @@ model User {
   createdAt    DateTime       @map("created_at") @db.Timestamp()
   updatedAt    DateTime       @map("updated_at") @db.Timestamp()
   PostCategory PostCategory[]
+  Post         Post[]
 
   @@map("users")
 }
@@ -48,4 +49,25 @@ model PostCategory {
   updatedAt   DateTime @map("updated_at") @db.Timestamp()
 
   @@map("post_categories")
+}
+
+model Post {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      User     @relation(fields: [userId], references: [id])
+  body      String?
+  images    Image[]
+  createdAt DateTime @map("created_at") @db.Timestamp()
+  updatedAt DateTime @map("updated_at") @db.Timestamp()
+
+  @@map("posts")
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  source    String
+  Post      Post?    @relation(fields: [postId], references: [id])
+  postId    String?
+  createdAt DateTime @map("created_at") @db.Timestamp()
+  updatedAt DateTime @map("updated_at") @db.Timestamp()
 }
