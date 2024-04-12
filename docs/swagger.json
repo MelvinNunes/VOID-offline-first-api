@@ -14,6 +14,32 @@
           }
         },
         "type": "object"
+      },
+      "register": {
+        "properties": {
+          "email": {
+            "example": "example@email.com",
+            "type": "string"
+          },
+          "password": {
+            "example": "Y@2@m",
+            "minLength": 5,
+            "type": "string"
+          },
+          "first_name": {
+            "example": "melvin",
+            "type": "string"
+          },
+          "last_name": {
+            "example": "nunes",
+            "type": "string"
+          },
+          "phone_number": {
+            "example": 842807039,
+            "type": "string"
+          }
+        },
+        "type": "object"
       }
     }
   },
@@ -85,6 +111,132 @@
           "Authentication"
         ]
       }
+    },
+    "/register": {
+      "post": {
+        "description": "Register user endpoint.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/register"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "User was registered successfully was successful"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "User already exists"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Registers the user to the app",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/me": {
+      "get": {
+        "description": "Get my user using the Token.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrivied user"
+          },
+          "404": {
+            "description": "User or Profile was not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Get my user using the Token.",
+        "tags": [
+          "Authentication"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "description": "Get all users from the Api.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrivied all users"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Get all users from the api (ADMIN).",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "String ID of the user to get"
+          }
+        ],
+        "description": "Get specific user using his ID.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrivied all users"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Get specific user using his ID.",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users/{user}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "String ID of the user id"
+          }
+        ],
+        "description": "Delete specific user from the api.",
+        "responses": {
+          "200": {
+            "description": "Successfully retrivied all users"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Delete specific user from the api.",
+        "tags": [
+          "Users"
+        ]
+      }
     }
   },
   "servers": [
@@ -96,6 +248,14 @@
     {
       "description": "Describes the health status of the application",
       "name": "Health"
+    },
+    {
+      "description": "Describes the authentication methods of the app",
+      "name": "Authentication"
+    },
+    {
+      "description": "Describes all users endpoints",
+      "name": "Users"
     }
   ]
 }
