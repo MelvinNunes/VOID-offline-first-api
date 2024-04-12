@@ -1,6 +1,7 @@
 {
     "health": "O servidor esta saudavel!",
     "invalid_id": "Inseriu um ID invalido!",
+    "invalid_param": "Inseriu um parametro invalido!",
     "internal_server_error": "Ocorreu um erro interno no servidor. Por favor tente mais tarde",
     "auth": {
         "success": "Login efectuado com sucesso!",

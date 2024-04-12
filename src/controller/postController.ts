@@ -130,7 +130,49 @@ export default class PostController {
     });
   }
 
-  static async getAllPosts(req: RequestWithUser, res: Response) {}
+  static async getAllPosts(req: RequestWithUser, res: Response) {
+    const authUser = req.user;
+    var skip: number, limit: number;
+
+    if (req.params.skip) {
+      try {
+        skip = Number(req.params.skip);
+      } catch (err) {
+        return res.status(400).json({
+          message: req.t("invalid_param"),
+        });
+      }
+    }
+
+    if (req.params.limit) {
+      try {
+        limit = Number(req.params.limit);
+      } catch (err) {
+        return res.status(400).json({
+          message: req.t("invalid_param"),
+        });
+      }
+    }
+
+    const user = await UserServices.findByEmail(authUser.name);
+    if (!user) {
+      return res.status(404).json({
+        message: req.t("user.not_found"),
+      });
+    }
+
+    if (user.role !== Role.ADMIN) {
+      return res.status(403).json({
+        message: req.t("post.unauthorized"),
+      });
+    }
+
+    const posts = await PostService.getAll(skip, limit);
+
+    return res.status(200).json({
+      data: posts,
+    });
+  }
 
   static async getPostDetailsById(req: RequestWithUser, res: Response) {
     const postId = req.params.id;

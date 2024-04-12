@@ -111,8 +111,14 @@ export default class PostService {
     });
   }
 
-  static async getAll() {
-    return await prisma.post.findMany();
+  static async getAll(skip?: number, take?: number) {
+    return await prisma.post.findMany({
+      skip: skip ?? 0,
+      take: take ?? 15,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
   }
 
   static async getById(id: string): Promise<Post> {
