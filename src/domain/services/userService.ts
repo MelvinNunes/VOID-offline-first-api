@@ -5,13 +5,13 @@ import { logger } from "../../../src/infrastructure/config/logger";
 
 const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
+
 export class UserServices {
   static async createUser(user: UserDTO) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(user.password, salt);
 
     const userData = {
-      id: uuidv4(),
       email: user.email,
       password: hashedPassword,
       role: user.role,
@@ -28,12 +28,19 @@ export class UserServices {
     }
 
     try {
+      // to refactor
+      const createdUser = await prisma.user.findFirst({
+        where: {
+          email: user.email,
+        },
+      });
+
       await prisma.profile.create({
         data: {
           firstName: user.firstName,
           lastName: user.lastName,
           phoneNumber: user.phoneNumber,
-          userId: userData.id,
+          userId: createdUser.id,
         },
       });
     } catch (err) {

@@ -9,6 +9,9 @@ import {
   registerValidator,
 } from "../infrastructure/validators/authValidators";
 import AuthController from "../../src/controller/authController";
+import { authenticateToken } from "./middlewares";
+import PostCategoryController from "../../src/controller/postCategoryController";
+import { createPostCategoryValidator } from "../../src/infrastructure/validators/postCategoriesValidators";
 const router = express.Router();
 const multer = require("multer");
 
@@ -35,6 +38,26 @@ router.post(
   AuthController.register
 );
 
-router.get("/users", UserController.getAllUsers);
+router.get("/me", authenticateToken, UserController.getOnlineUser);
+router.get("/users", authenticateToken, UserController.getAllUsers);
+
+router.post(
+  "/categories",
+  authenticateToken,
+  checkSchema(createPostCategoryValidator),
+  PostCategoryController.createPostCategory
+);
+
+router.get(
+  "/categories",
+  authenticateToken,
+  PostCategoryController.getAllPostCategories
+);
+
+router.get(
+  "/categories/:id",
+  authenticateToken,
+  PostCategoryController.getPostCategoryById
+);
 
 module.exports = router;

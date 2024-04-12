@@ -8,3 +8,11 @@ export type UserDTO = {
   password: string;
   role: Role;
 };
+
+export type UserVM = {
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
+  email: string;
+  role: Role;
+};
