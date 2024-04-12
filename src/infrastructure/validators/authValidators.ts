@@ -31,32 +31,24 @@ export const registerValidator = {
       },
     },
   },
-  firstName: {
+  first_name: {
     optional: false,
     errorMessage: "Please enter your first name",
     isString: {
       errorMessage: "Insert a valid last name",
     },
   },
-  lastName: {
+  last_name: {
     optional: false,
     errorMessage: "Please enter your last name",
     isString: {
       errorMessage: "Insert a valid last name",
     },
   },
-  phoneNumber: {
-    optional: false,
-    errorMessage: "Please enter your phone number",
+  phone_number: {
+    optional: true,
     isNumeric: {
       errorMessage: "Please enter a valid phone number",
-    },
-  },
-  identificationNumber: {
-    optional: false,
-    errorMessage: "Please enter your identification number",
-    isString: {
-      errorMessage: "Please enter a valid identification number",
     },
   },
 };

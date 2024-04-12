@@ -14,34 +14,23 @@ const multer = require("multer");
 
 var storage = multer.diskStorage({
   destination: function (req: any, file: any, cb: any) {
-    cb(null, "uploads/users/documents");
+    cb(null, "uploads");
   },
   filename: function (req: any, file: any, cb: any) {
     cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-const uploadRegister = multer({
+const upload = multer({
   storage: storage,
   fileFilter: function (_req: any, file: any, cb: any) {
     isDocument(file, cb);
   },
 });
 
-/**
- * @openapi
- * /:
- *   get:
- *     description: Welcome to swagger-jsdoc!
- *     responses:
- *       200:
- *         description: Returns a mysterious string.
- */
 router.get("/health", HealthController.checkApiHealth);
-
 router.post("/login", checkSchema(loginValidator), AuthController.login);
 router.post(
   "/register",
-  uploadRegister.single("identificationFile"),
   checkSchema(registerValidator),
   AuthController.register
 );

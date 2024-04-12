@@ -1,7 +1,9 @@
 import { Role } from "@prisma/client";
 
 export type UserDTO = {
-  name: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber?: string;
   email: string;
   password: string;
   role: Role;

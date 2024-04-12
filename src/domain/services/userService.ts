@@ -1,21 +1,45 @@
 import { PrismaClient } from "@prisma/client";
 import { UserDTO } from "../../../src/dtos/userDTOs";
+import { v4 as uuidv4 } from "uuid";
+import { logger } from "../../../src/infrastructure/config/logger";
 
+const bcrypt = require("bcrypt");
 const prisma = new PrismaClient();
-
 export class UserServices {
   static async createUser(user: UserDTO) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(user.password, salt);
+
     const userData = {
+      id: uuidv4(),
       email: user.email,
-      password: user.password,
+      password: hashedPassword,
       role: user.role,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
 
-    await prisma.user.create({
-      data: userData,
-    });
+    try {
+      await prisma.user.create({
+        data: userData,
+      });
+    } catch (err) {
+      logger.error("Error while saving user: ", err);
+    }
+
+    try {
+      await prisma.profile.create({
+        data: {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          phoneNumber: user.phoneNumber,
+          userId: userData.id,
+        },
+      });
+    } catch (err) {
+      logger.error("Error while saving profile: ", err);
+    }
+
     return userData;
   }
 
