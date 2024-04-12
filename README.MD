@@ -17,15 +17,17 @@ Firstly, you need to setup all the environment variables, create a new .env file
 
 After setting up all environment variables, just run "docker compose up -d" and then wait for docker compose to start all services (containers).
 
-You can check `localhost:8000/v1/health` (the standard port number is 8000) to check if the app is running!
+You can check `localhost:8000/api/v1/health` (the standard port number is 8000) to check if the app is running!
 
 - If youre willing to run it without docker, just set up the database in .env and install NodeJS and the use the command `yarn` to install dependecies and `yarn dev` to run the project (in the root of the project).
 
 # DOCUMENTATION
 
-You can also use the following url `localhost:8000/api/docs` to see the documentation (i used swagger for the API documentation).
+You can also use the following url `localhost:8000/docs` to see the documentation (i used swagger for the API documentation).
 
 # INTERNATIONALIZATION
+
+This API has internationalization support, you can add `Accept-Language: pt/en` in your request header!
 
 # DATABASE AND MIGRATIONS
 
