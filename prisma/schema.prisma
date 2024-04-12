@@ -16,13 +16,14 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      Role
-  profile   Profile?
-  createdAt DateTime @db.Timestamp()
-  updatedAt DateTime @db.Timestamp()
+  id           String         @id @default(uuid())
+  email        String         @unique
+  password     String
+  role         Role
+  profile      Profile?
+  createdAt    DateTime       @map("created_at") @db.Timestamp()
+  updatedAt    DateTime       @map("updated_at") @db.Timestamp()
+  PostCategory PostCategory[]
 
   @@map("users")
 }
@@ -31,13 +32,20 @@ model Profile {
   id          Int     @id @default(autoincrement())
   userId      String  @unique
   user        User    @relation(fields: [userId], references: [id])
-  firstName   String
-  lastName    String
-  phoneNumber String?
+  firstName   String  @map("first_name")
+  lastName    String  @map("last_name")
+  phoneNumber String? @map("phone_number")
 
   @@map("profiles")
 }
 
 model PostCategory {
-  id Int @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  createdById String   @map("created_by")
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  createdAt   DateTime @map("created_at") @db.Timestamp()
+  updatedAt   DateTime @map("updated_at") @db.Timestamp()
+
+  @@map("post_categories")
 }
