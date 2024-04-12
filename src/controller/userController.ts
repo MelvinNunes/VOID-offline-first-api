@@ -18,14 +18,14 @@ export default class UserController {
     const user = await UserServices.findByEmail(authUser.name);
     if (!user) {
       return res.status(404).json({
-        message: "User not found!",
+        message: req.t("user.not_found"),
       });
     }
 
     const profile = await ProfileService.findByUserId(user.id);
     if (!profile) {
       return res.status(404).json({
-        message: "Profile not found!",
+        message: req.t("profile.not_found"),
       });
     }
 
@@ -38,7 +38,7 @@ export default class UserController {
     };
 
     return res.status(200).json({
-      message: "Your profile",
+      message: req.t("profile.success"),
       data: userVM,
     });
   }

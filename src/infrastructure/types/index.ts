@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { TFunction } from "i18next";
 
 export type AuthUser = {
   name: string;
@@ -28,8 +29,14 @@ export type File = {
 
 export interface RequestWithUser extends Request {
   user?: AuthUser;
+  t?: TFunction;
 }
 
 export interface RegisterRequest extends Request {
   file: File;
+  t?: TFunction;
+}
+
+export interface RequestWTranslation extends Request {
+  t?: TFunction;
 }

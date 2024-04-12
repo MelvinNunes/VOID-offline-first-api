@@ -1,3 +1,28 @@
 {
-    "health": "The server is health!"
+    "health": "The server is health!",
+    "invalid_id": "Invalid ID in path!",
+    "internal_server_error": "An internal error occurred while performing the request",
+    "auth": {
+        "success": "You're now authenticated!",
+        "invalid_credentials": "Invalid credentials",
+        "not_enough_access": "Only a Admin can perform this action!"
+    },
+    "post_category": {
+        "already_exists": "Post category already exists!",
+        "not_found": "Post category was not found!",
+        "internal_error": "Error saving post category!",
+        "created": "Post category was created successfully!",
+        "updated": "Post category was updated successfully!",
+        "deleted": "Post category was deleted successfully!"
+    },
+    "user": {
+        "created": "User created successfully!",
+        "already_exists": "User already exists!",
+        "already_exists_with_email": "User with given email already exists! If its your account, please login.",
+        "not_found": "User not found"
+    },
+    "profile": {
+        "success": "Your profile",
+        "not_found": "Profile was not found!"
+    }
 }

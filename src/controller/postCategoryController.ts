@@ -22,20 +22,20 @@ export default class PostCategoryController {
     );
     if (alreadyRegistered) {
       return res.status(409).json({
-        message: "Post category already exists!",
+        message: req.t("post_category.already_exists"),
       });
     }
 
     const user = await UserServices.findByEmail(authUser.name);
     if (!user) {
       return res.status(404).json({
-        message: "User not found!",
+        message: req.t("user.not_found"),
       });
     }
 
     if (user.role !== Role.ADMIN) {
       return res.status(403).json({
-        message: "Only admins can create post categories!",
+        message: req.t("auth.not_enough_access"),
       });
     }
 
@@ -43,12 +43,12 @@ export default class PostCategoryController {
       await PostCategoriesService.create(data.name, user.id);
     } catch (err) {
       return res.status(500).json({
-        message: "Error saving post category!",
+        message: req.t("post_category.internal_error"),
       });
     }
 
     return res.status(201).json({
-      message: "Post category was created successfully!",
+      message: req.t("post_category.created"),
     });
   }
 
@@ -65,7 +65,7 @@ export default class PostCategoryController {
       id = Number(req.params.id);
     } catch (err) {
       return res.status(400).json({
-        message: "Invalid id!",
+        message: req.t("invalid_id"),
       });
     }
 
@@ -88,13 +88,13 @@ export default class PostCategoryController {
     const user = await UserServices.findByEmail(authUser.name);
     if (!user) {
       return res.status(404).json({
-        message: "User not found!",
+        message: req.t("user.not_found"),
       });
     }
 
     if (user.role !== Role.ADMIN) {
       return res.status(403).json({
-        message: "Only admins can update categories!",
+        message: req.t("auth.not_enough_access"),
       });
     }
 
@@ -103,14 +103,14 @@ export default class PostCategoryController {
       id = Number(req.params.id);
     } catch (err) {
       return res.status(400).json({
-        message: "Invalid id!",
+        message: req.t("invalid_id"),
       });
     }
 
     const postCategory = await PostCategoriesService.getById(id);
     if (!postCategory) {
       return res.status(404).json({
-        message: "Post category not found!",
+        message: req.t("post_category.not_found"),
       });
     }
 
@@ -120,13 +120,13 @@ export default class PostCategoryController {
         data.name
       );
       return res.status(200).json({
-        message: "Post category updated successfully!",
+        message: req.t("post_category.updated"),
         data: updatedPost,
       });
     } catch (err) {
       logger.error("Error updating post category: ", err);
       return res.status(500).json({
-        message: "Error updating post category!",
+        message: req.t("post_category.internal_server_error"),
       });
     }
   }
@@ -137,13 +137,13 @@ export default class PostCategoryController {
     const user = await UserServices.findByEmail(authUser.name);
     if (!user) {
       return res.status(404).json({
-        message: "User not found!",
+        message: req.t("user.not_found"),
       });
     }
 
     if (user.role !== Role.ADMIN) {
       return res.status(403).json({
-        message: "Only admins can delete categories!",
+        message: req.t("auth.not_enough_access"),
       });
     }
 
@@ -152,20 +152,20 @@ export default class PostCategoryController {
       id = Number(req.params.id);
     } catch (err) {
       return res.status(400).json({
-        message: "Invalid id!",
+        message: req.t("invalid_id"),
       });
     }
 
     const postExists = await PostCategoriesService.existsById(id);
     if (!postExists) {
       return res.status(404).json({
-        message: "Post category not found!",
+        message: req.t("post_category.not_found"),
       });
     }
 
     await PostCategoriesService.delete(id);
     return res.status(200).json({
-      message: "Post category deleted successfully!",
+      message: req.t("user.deleted"),
     });
   }
 }
