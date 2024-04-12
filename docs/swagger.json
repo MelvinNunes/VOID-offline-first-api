@@ -1,5 +1,11 @@
 {
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
     "schemas": {
       "login": {
         "properties": {
@@ -37,6 +43,59 @@
           "phone_number": {
             "example": 842807039,
             "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "category": {
+        "properties": {
+          "name": {
+            "example": "Balada",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "postImages": {
+        "properties": {
+          "is_post": {
+            "example": false,
+            "type": "boolean"
+          },
+          "file": {
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "post": {
+        "properties": {
+          "id": {
+            "example": "uuid",
+            "type": "string"
+          },
+          "title": {
+            "example": "melhor do mundo",
+            "type": "string"
+          },
+          "content": {
+            "example": "batata",
+            "type": "string"
+          },
+          "category": {
+            "example": 1,
+            "type": "number"
+          }
+        },
+        "type": "object"
+      },
+      "postBody": {
+        "properties": {
+          "posts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/post"
+            }
           }
         },
         "type": "object"
@@ -147,6 +206,11 @@
     },
     "/me": {
       "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "description": "Get my user using the Token.",
         "responses": {
           "200": {
@@ -167,6 +231,11 @@
     },
     "/users": {
       "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "description": "Get all users from the Api.",
         "responses": {
           "200": {
@@ -184,6 +253,11 @@
     },
     "/users/{userId}": {
       "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
@@ -208,14 +282,17 @@
         "tags": [
           "Users"
         ]
-      }
-    },
-    "/users/{user}": {
+      },
       "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "parameters": [
           {
             "in": "path",
-            "name": "user",
+            "name": "userId",
             "schema": {
               "type": "string"
             },
@@ -237,6 +314,424 @@
           "Users"
         ]
       }
+    },
+    "/users/{userId}/posts": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "String ID of the userId Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post was updated successful"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Gets all posts from specific user",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/categories": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/category"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Category was created successful"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "409": {
+            "description": "Category already exists"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Creates a new category in app",
+        "tags": [
+          "Categories"
+        ]
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrivied all users"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Gets All post categories for Posts.",
+        "tags": [
+          "Categories"
+        ]
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "Int ID of the category to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Category Not Found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Get specific post category details using his ID.",
+        "tags": [
+          "Categories"
+        ]
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "Int ID of the category Id"
+          }
+        ],
+        "description": "Delete specific post category from the api.",
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "404": {
+            "description": "Category Not Found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Delete specific post category from the api.",
+        "tags": [
+          "Categories"
+        ]
+      },
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "number"
+            },
+            "required": true,
+            "description": "Int ID of the category Id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/category"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Category was updated successful"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Updates a category in app",
+        "tags": [
+          "Categories"
+        ]
+      }
+    },
+    "/posts/{id}/images": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "String ID of the post Id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postImages"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Image was uploaded successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Uploads images to a post or creates posts with image only",
+        "tags": [
+          "Posts"
+        ]
+      }
+    },
+    "/posts": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Post were created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Creates many posts using an array of posts",
+        "tags": [
+          "Posts"
+        ]
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrivied all posts"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Gets All posts.",
+        "tags": [
+          "Posts"
+        ]
+      }
+    },
+    "/posts/{id}": {
+      "put": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "String ID of the post Id"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Post was updated successful"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Post not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Updates a post in app",
+        "tags": [
+          "Posts"
+        ]
+      },
+      "get": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "String ID of the post Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post was updated successful"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "404": {
+            "description": "Post was not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Gets details of a post in app",
+        "tags": [
+          "Posts"
+        ]
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "String ID of the post Id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Post was deleted successful"
+          },
+          "404": {
+            "description": "Post was not found"
+          },
+          "500": {
+            "description": "Internal Error"
+          }
+        },
+        "summary": "Deletes a post by id",
+        "tags": [
+          "Posts"
+        ]
+      }
     }
   },
   "servers": [
@@ -256,6 +751,14 @@
     {
       "description": "Describes all users endpoints",
       "name": "Users"
+    },
+    {
+      "description": "Describes all post categories endpoints",
+      "name": "Categories"
+    },
+    {
+      "description": "Describes all post endpoints",
+      "name": "Posts"
     }
   ]
 }
